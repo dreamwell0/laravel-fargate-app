@@ -12,18 +12,26 @@ env:
   SYSTEM_NAME: example
   SERVICE_NAME: foobar
 
+
+permissions:
+  id-token: write # required!
+  contents: read
+
 jobs:
   deploy:
     name: Deploy app to AWS Fargate
     runs-on: ubuntu-latest
 
     steps:
+      - uses: actions/checkout@v2
       - name: get-caller-identity
         #if: github.ref == 'refs/heads/main'
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@master
         with:
           role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/GitHubActionsOIDCTest
           aws-region: ap-northeast-1
+          role-session-name: GitHubActions-${{ github.run_id }}
+          role-duration-seconds: 900 # minimum: 900sec, maximum: iam role session duration
       - run: aws sts get-caller-identity
 
       - name: Set env vars for prod
