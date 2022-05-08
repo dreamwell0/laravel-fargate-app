@@ -29,9 +29,7 @@
     "awsvpcConfiguration": {
       "assignPublicIp": "DISABLED",
       "securityGroups": [
-        "{{ tfstate `data.aws_security_group.vpc.id` }}",
-        "{{ tfstate `data.aws_security_group.db_foobar.id` }}",
-        "{{ tfstate `data.aws_security_group.cache_foobar.id` }}"
+        "{{ tfstate `data.aws_security_group.vpc.id` }}"
       ],
       "subnets": [
         "{{ tfstate `data.aws_subnet.private['a'].id` }}",
@@ -41,6 +39,7 @@
   },
   "placementConstraints": [],
   "placementStrategy": [],
+  "platformFamily": "Linux",
   "platformVersion": "1.4.0",
   "schedulingStrategy": "REPLICA",
   "serviceRegistries": [],
